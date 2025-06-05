@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "backup-mod",
+  "version": "${version}",
+  "name": "backup-mod",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/backup-mod/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "fabric-datagen": [
+      "com.pey.backupmod.backupMod.client.BackupModDataGenerator"
+    ],
+    "main": [
+      "com.pey.backupmod.backupMod.BackupMod"
+    ]
+  },
+  "mixins": [
+    "backup-mod.mixins.json",
+    {
+      "config": "backup-mod.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
