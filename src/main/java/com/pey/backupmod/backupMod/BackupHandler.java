@@ -49,6 +49,8 @@ public class BackupHandler {
                 saveFuture.complete(null);
                 broadcast(server, Text.literal("[Server: Saved the game]")
                         .styled(style -> style.withColor(Formatting.GRAY).withItalic(true)));
+
+                broadcast(server, Text.literal("Creating backup..."));
             }
         });
         saveFuture.get();
@@ -63,8 +65,6 @@ public class BackupHandler {
         String formattedDate = now.format(formatter);
         String backupName = "backup_" + formattedDate + ".zip";
         Path zipFile = backupPath.resolve(backupName);
-
-        broadcast(server, Text.literal("Creating backup..."));
 
         // Comprimir carpeta del mundo
         try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(zipFile))) {
