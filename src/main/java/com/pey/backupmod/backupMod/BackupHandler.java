@@ -82,7 +82,7 @@ public class BackupHandler {
             });
         }
 
-        broadcast(server, Text.literal("Backup successfully created!").formatted(Formatting.GREEN));
+        broadcast(server, Text.literal("Backup created successfully!").formatted(Formatting.GREEN));
 
         // Reactivar guardado automático
         server.execute(() -> {
