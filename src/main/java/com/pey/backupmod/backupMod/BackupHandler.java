@@ -61,7 +61,7 @@ public class BackupHandler {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmmss");
         String formattedDate = now.format(formatter);
-        String backupName = "world_backup_" + formattedDate + ".zip";
+        String backupName = "backup_" + formattedDate + ".zip";
         Path zipFile = backupPath.resolve(backupName);
 
         broadcast(server, Text.literal("Creating backup..."));
