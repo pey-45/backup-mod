@@ -35,8 +35,8 @@ public class BackupHandler {
                 server.getCommandManager().executeWithPrefix(silentSource, "save-off");
             } finally {
                 disableAutoSave.complete(null);
-                broadcast(server, Text.literal("[Server: Automatic saving is now disabled]")
-                        .styled(style -> style.withColor(Formatting.GRAY).withItalic(true)));
+                //broadcast(server, Text.literal("[Server: Automatic saving is now disabled]")
+                //        .styled(style -> style.withColor(Formatting.GRAY).withItalic(true)));
             }
         });
         disableAutoSave.get();
@@ -47,8 +47,8 @@ public class BackupHandler {
                 server.getCommandManager().executeWithPrefix(silentSource, "save-all");
             } finally {
                 saveFuture.complete(null);
-                broadcast(server, Text.literal("[Server: Saved the game]")
-                        .styled(style -> style.withColor(Formatting.GRAY).withItalic(true)));
+                //broadcast(server, Text.literal("[Server: Saved the game]")
+                //        .styled(style -> style.withColor(Formatting.GRAY).withItalic(true)));
 
                 broadcast(server, Text.literal("Creating backup..."));
             }
@@ -87,8 +87,8 @@ public class BackupHandler {
         // Reactivar guardado automático
         server.execute(() -> {
             server.getCommandManager().executeWithPrefix(silentSource, "save-on");
-            broadcast(server, Text.literal("[Server: Automatic saving is now enabled]")
-                    .styled(style -> style.withColor(Formatting.GRAY).withItalic(true)));
+            //broadcast(server, Text.literal("[Server: Automatic saving is now enabled]")
+            //        .styled(style -> style.withColor(Formatting.GRAY).withItalic(true)));
         });
     }
 }
