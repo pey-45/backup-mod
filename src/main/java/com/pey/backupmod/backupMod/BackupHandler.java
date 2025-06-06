@@ -77,7 +77,7 @@ public class BackupHandler {
                         zos.closeEntry();
                     }
                 } catch (IOException e) {
-                    System.err.println("Error al copiar " + file + ": " + e.getMessage());
+                    System.err.println("Error copying " + file + ": " + e.getMessage());
                 }
             });
         }
@@ -90,5 +90,67 @@ public class BackupHandler {
             //broadcast(server, Text.literal("[Server: Automatic saving is now enabled]")
             //        .styled(style -> style.withColor(Formatting.GRAY).withItalic(true)));
         });
+    }
+
+    public static int getBackupCount(ServerCommandSource source) {
+        Path backupDir = Paths.get("backups");
+        long count = 0;
+        try {
+            if (Files.exists(backupDir)) {
+                count = Files.list(backupDir)
+                        .filter(path -> path.toString().endsWith(".zip"))
+                        .count();
+            }
+        } catch (IOException e) {
+            source.sendMessage(Text.literal("Error reading backup directory: " + e.getMessage())
+                    .styled(style -> style.withColor(Formatting.RED)));
+            return 0;
+        }
+
+        source.sendMessage(
+                Text.literal(count + " backup(s) found")
+        );
+        return (int) count;
+    }
+
+    public static int deleteOldestBackups(ServerCommandSource source, int amount) {
+        Path backupDir = Paths.get("backups");
+
+        try {
+            if (!Files.exists(backupDir)) {
+                source.sendMessage(Text.literal("Backup folder does not exist")
+                        .styled(style -> style.withColor(Formatting.RED)));
+                return 0;
+            }
+
+            var backups = Files.list(backupDir)
+                    .filter(path -> path.toString().endsWith(".zip"))
+                    .sorted((a, b) -> {
+                        try {
+                            return Files.getLastModifiedTime(a).compareTo(Files.getLastModifiedTime(b));
+                        } catch (IOException e) {
+                            return 0;
+                        }
+                    })
+                    .toList();
+
+            if (backups.size() - amount < 5) {
+                source.sendMessage(Text.literal("At least 5 backups must remain")
+                        .styled(style -> style.withColor(Formatting.RED)));
+                return 0;
+            }
+
+            for (int i = 0; i < amount; i++) {
+                Files.deleteIfExists(backups.get(i));
+            }
+
+            source.sendMessage(Text.literal("Deleted " + amount + " oldest backup(s)"));
+            return amount;
+
+        } catch (IOException e) {
+            source.sendMessage(Text.literal("Error deleting backups: " + e.getMessage())
+                    .styled(style -> style.withColor(Formatting.RED)));
+            return 0;
+        }
     }
 }
